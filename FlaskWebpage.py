@@ -1,10 +1,3 @@
-# from pip._internal import main as pipmain
-
-# pipmain(['install', 'Flask'])
-
-# print('All Done')
-# exit(0)
-
 from flask import Flask, send_from_directory
 
 app = Flask(__name__)
