@@ -16,5 +16,6 @@ def static_assets(path: str):
 print('Breakpoint me!')
 
 if __name__ == '__main__':
-	app.run('0.0.0.0', 5000, True)
-            #host number, port, reruns the files automatically
+	app.run(debug=True)
+    #host number, port, reruns the files automatically
+	# app.run('0.0.0.0', 2000, True)
