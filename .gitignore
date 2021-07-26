@@ -1,2 +1,4 @@
 key.txt 
 .vscode
+cache
+__pycache__

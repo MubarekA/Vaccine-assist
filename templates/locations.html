@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8"> <!--  unicode 8   -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"><!--  scalling for mobile   -->
+		<meta name="description" content="Find out where to get your vaccine at!"><!--  general description   -->
+		<link rel="stylesheet" href="/static/index.css" />
+		<!--Bootstrapping for Table-->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+		<title>Vaccine Locator</title><!--  Tab name   -->
+	</head>
+	<body>
+		<a href="/">Go Home</a> <!--Button to go back to home page-->
+		<h1>Locations go here</h1> <!--Name of Table-->
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">Name</th>    <!--Name-->
+					<th scope="col">Address</th>  <!--Adress column-->
+					<th scope="col">City</th>     <!--City Column-->
+					<th scope="col">State</th>    <!--State Column-->
+					<th scope="col">Distance (km)</th>  <!--Distance-->
+				</tr>
+			</thead>
+			<tbody>
+				{% for location in locations[index:index + 10] %} <!--Specific Jinja2 syntax for looping -->
+					<tr>
+						<td>{{ location[0] }}</td> <!--Name-->
+						<td>{{ location[1] }}</td> <!--Address-->
+						<td>{{ location[2] }}</td> <!--City-->
+						<td>{{ location[3] }}</td> <!--State-->
+						<td>{{ location[4] }}</td> <!--Distance-->
+					</tr>
+				{% endfor %}  <!--When to stop for loop-->
+			</tbody>
+		</table>
+
+		<ul class="pagination"> <!--Pagination Elements for splitting into two forms previous and next locations-->
+			<form action="get_previous_locations" method="post" enctype= "multipart/form-data">
+				<li class="page-item"><button type="submit" class="page-link">Previous</button></li>
+				<input type="hidden" name="locations" value="{{ locations|tojson|forceescape }}">
+				<input type="hidden" name="index" value="{{ index }}"/>
+			</form>
+			<li class="page-item"><button disabled class="page-link">{{ index / 10 }}</button></li>
+			<form action="get_next_locations" method="post" enctype= "multipart/form-data">
+				<li class="page-item"><button type="submit" class="page-link">Next</button></li>
+				<input type="hidden" name="locations" value="{{ locations|tojson|forceescape }}"> 
+				<input type="hidden" name="index" value="{{ index }}"/>
+			</form>
+		</ul>
+  </body>
+</html>
