@@ -4,6 +4,7 @@ import json
 import requests
 import math
 
+
 file = open('key.txt','r')
 key = file.read().strip()
 
