@@ -12,14 +12,12 @@ absl-py==0.12.0
 appdirs==1.4.4
 astunparse==1.6.3
 cachetools==4.2.1
-certifi==2020.12.5
 cfgv==3.3.0
 chardet==4.0.0
 click==7.1.2
 cycler==0.10.0
 distlib==0.3.1
 filelock==3.0.12
-Flask==1.1.2
 flatbuffers==1.12
 gast==0.4.0
 google-auth==1.28.1
