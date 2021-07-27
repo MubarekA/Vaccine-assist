@@ -7,5 +7,5 @@ distribute==0.6.24
 gunicorn==0.14.2
 requests==0.11.1
 pyflakes==2.3.1
-setuptools==49.2.1
+setuptools==45.2.0
 MarkupSafe==1.1
