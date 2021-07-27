@@ -109,4 +109,4 @@ print('Breakpoint me!')
 if __name__ == '__main__':
 	# app.run(debug=True)
     #host number, port, reruns the files automatically
-	app.run('127.0.0.1', 2000, True)
+	app.run('127.0.0.1', int(os.environ.get('PORT', 2000)), True)
