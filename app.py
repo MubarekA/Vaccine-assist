@@ -1,9 +1,16 @@
+<<<<<<< HEAD
 from flask import Flask, send_from_directory, request, redirect, render_template
 from haversine.haversine import Unit
 import requests
 import haversine as hs
 import os
 import json
+=======
+from flask import Flask, send_from_directory, request, redirect
+from haversine.haversine import Unit
+import requests
+import haversine as hs
+>>>>>>> 7e69d23 (My changes)
 
 
 app = Flask(__name__)
@@ -11,6 +18,7 @@ app = Flask(__name__)
 states = {
 	'all_states' : requests.get("https://www.vaccinespotter.org/api/v0/states.json"),
 	'US' : requests.get("https://www.vaccinespotter.org/api/v0/US.json"),
+<<<<<<< HEAD
 	'MS': requests.get("https://www.vaccinespotter.org/api/v0/states/MS.json")
 }
 
@@ -27,6 +35,11 @@ def fetch_then_cache(url, name):
 	with open(cachepath, 'w') as f:
 			return f.write(json.dumps(data))
 	return data
+=======
+	# 'MS': requests.get("https://www.vaccinespotter.org/api/v0/states/MS.json")
+}
+
+>>>>>>> 7e69d23 (My changes)
 
 @app.route('/') #route decorator for server to run this html code then give to browser
 def index():
@@ -56,6 +69,7 @@ def get_user_location():
 	print(get_locs)
 	
 
+<<<<<<< HEAD
 	return render_template('locations.html', locations=get_locs, index=0)
 
 @app.route('/get_next_locations', methods=['POST'])
@@ -74,6 +88,14 @@ def get_previous_locations():
 def getLocations(coord):
 	limit = 5
 	#all_states = fetch_then_cache('https://www.vaccinespotter.org/api/v0/US.json', 'us')
+=======
+	return redirect("http://127.0.0.1:2000")
+
+#this function uses haversine library to calculate distance between two coordinates and sorts them based on closest location
+def getLocations(coord):
+	
+	limit = 5
+>>>>>>> 7e69d23 (My changes)
 	all_states = states['US'].json()
 	# MS = states['MS'].json()
 	i = 0  #counts the number of locations within defined distance
@@ -109,4 +131,8 @@ print('Breakpoint me!')
 if __name__ == '__main__':
 	# app.run(debug=True)
     #host number, port, reruns the files automatically
+<<<<<<< HEAD
 	app.run('127.0.0.1', int(os.environ.get('PORT', 2000)), True)
+=======
+	app.run('127.0.0.1', 2000, True)
+>>>>>>> 7e69d23 (My changes)

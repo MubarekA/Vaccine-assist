@@ -64,6 +64,7 @@
       }
     </script>
 
+<<<<<<< HEAD
     <p>Use the form below to get nearest vaccine locations to you</p>
 
 		<form action="get_user_location" method="post" enctype= "multipart/form-data">
@@ -71,5 +72,23 @@
 			<button type="button" onclick="showPosition();" class="btn btn-secondary">Get My Location</button>
 			<button type="submit" disabled class="btn btn-primary">Get Nearest Vaccine Locations</button>
 		</form>
+=======
+
+			
+		</script>
+    <p>Click Here To Find Nearest Vaccine</p>
+
+		<form action="get_user_location" method="post" enctype= "multipart/form-data">
+			<button type="button" id="btn-post" onclick="do_ajax();">Click</button>
+			<div>
+				<p id="result"></p>
+				<p id ="result1"></p>
+			</div>
+			
+			<!-- <textarea id="result">{{result}}</textarea> -->
+	    </form>
+		<button type="button" onclick="showPosition();">Find Vaccine</button>
+		   
+>>>>>>> 7e69d23 (My changes)
     </body>
 </html>
