@@ -31,8 +31,8 @@
 						<td>{{ location[1] }}</td> <!--Address-->
 						<td>{{ location[2] }}</td> <!--City-->
 						<td>{{ location[3] }}</td> <!--State-->
-						<td>{{ location[4] }}</td> <!--Distance-->
-						<td>{{ location[4]* 0.62137 }}</td> <!--Distance in miles-->
+						<td>{{ '%0.2f'| format(location[4]|float) }}</td> <!--Distance-->
+						<td>{{ '%0.2f'| format(location[4]* 0.62137|float) }}</td><!--Distance in miles-->
 					</tr>
 				{% endfor %}  <!--When to stop for loop-->
 			</tbody>
