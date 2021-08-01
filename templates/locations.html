@@ -21,6 +21,7 @@
 					<th scope="col">City</th>     <!--City Column-->
 					<th scope="col">State</th>    <!--State Column-->
 					<th scope="col">Distance (km)</th>  <!--Distance-->
+					<th scope="col">Distance (Miles) </th>
 				</tr>
 			</thead>
 			<tbody>
@@ -31,6 +32,7 @@
 						<td>{{ location[2] }}</td> <!--City-->
 						<td>{{ location[3] }}</td> <!--State-->
 						<td>{{ location[4] }}</td> <!--Distance-->
+						<td>{{ location[4]* 0.62137 }}</td> <!--Distance in miles-->
 					</tr>
 				{% endfor %}  <!--When to stop for loop-->
 			</tbody>
