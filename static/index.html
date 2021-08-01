@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="UTF-8"> <!--  unicode 8   -->
+		<meta charset="UTF-8"> <!--  unicode 8  
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"><!--  scalling for mobile   -->
-		<meta name="description" content="Find out where to get your vaccine at!"><!--  general description   -->
+		<meta name="description" content="Find out where to get your vaccine at!"> 
 		<link rel="stylesheet" href="/static/index.css" />
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -13,6 +14,8 @@
 		<script>
 			// Set up global variable
 			var result;
+			var lat;
+			var long;
 			
 			function showPosition() {
 				// Store the element where the page displays the result
@@ -21,7 +24,7 @@
 				// If geolocation is available, try to get the visitor's position
 				if(navigator.geolocation) {
 					navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-					result.value = "Getting the position information...";
+					result.value = "Getting your location information...";
 				} else {
 					alert("Sorry, your browser does not support HTML5 geolocation.");
 				}
@@ -29,7 +32,28 @@
 			
 			// Define callback function for successful attempt
 			function successCallback(position) {
+				lat = position.coords.latitude;
+				long = position.coords.longitude;
+				var locs = "https://geolocation-db.com/json/"
+				var httpRequest = new XMLHttpRequest();
+				httpRequest.onreadystatechange = displayContents;
+				httpRequest.open('GET', locs, true);
+				httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                httpRequest.send();
+
+				function displayContents(){
+					if (httpRequest.readyState === XMLHttpRequest.DONE) {
+						if (httpRequest.status === 200) {
+							var response = JSON.parse(httpRequest.responseText);
+							
+						} else {
+							alert('There was a problem with the request.');
+						}
+					}
+				}
+
 				result.value = "Your current position is (" + "Latitude: " + position.coords.latitude + ", " + "Longitude: " + position.coords.longitude + ")";
+				
 				document.querySelector('button[type="submit"]').removeAttribute('disabled');
 			}
 			
@@ -48,47 +72,24 @@
 			
       		function do_ajax() {
             	var req = new XMLHttpRequest();
-        		var result1 = document.getElementById("result1");
+        		
         		req.onreadystatechange = function()
         		{
-        //   		if(this.readyState == 4 && this.status == 200) {
-        //     		result1.innerHTML = this.responseText;
-        //   		} else {
-        //     		result1.innerHTML = "Could Not parse";
-        //   }
+       
         }
 
-        req.open('POST', '/get_user_location', true);
+        req.open('POST', '/get_ajax_locations', true);
         req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-        req.send("result=" + document.getElementById("result").innerHTML);
+        req.send("result=" + lat.toString()+","+long.toString());
       }
     </script>
 
-<<<<<<< HEAD
     <p>Use the form below to get nearest vaccine locations to you</p>
 
-		<form action="get_user_location" method="post" enctype= "multipart/form-data">
+		<form method="post" action="get_user_location" enctype= "multipart/form-data">
 			<textarea name="result" id="result" rows="10" cols="10" class="form-control" placeholder="Output"></textarea>
 			<button type="button" onclick="showPosition();" class="btn btn-secondary">Get My Location</button>
-			<button type="submit" disabled class="btn btn-primary">Get Nearest Vaccine Locations</button>
+			<button type="submit" disabled class="btn btn-primary" onclick="do_ajax();">Get Nearest Vaccine Locations</button>
 		</form>
-=======
-
-			
-		</script>
-    <p>Click Here To Find Nearest Vaccine</p>
-
-		<form action="get_user_location" method="post" enctype= "multipart/form-data">
-			<button type="button" id="btn-post" onclick="do_ajax();">Click</button>
-			<div>
-				<p id="result"></p>
-				<p id ="result1"></p>
-			</div>
-			
-			<!-- <textarea id="result">{{result}}</textarea> -->
-	    </form>
-		<button type="button" onclick="showPosition();">Find Vaccine</button>
-		   
->>>>>>> 7e69d23 (My changes)
     </body>
-</html>
+</html> 

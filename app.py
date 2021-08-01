@@ -1,16 +1,10 @@
-<<<<<<< HEAD
 from flask import Flask, send_from_directory, request, redirect, render_template
 from haversine.haversine import Unit
 import requests
 import haversine as hs
 import os
 import json
-=======
-from flask import Flask, send_from_directory, request, redirect
-from haversine.haversine import Unit
-import requests
-import haversine as hs
->>>>>>> 7e69d23 (My changes)
+import time
 
 
 app = Flask(__name__)
@@ -18,7 +12,6 @@ app = Flask(__name__)
 states = {
 	'all_states' : requests.get("https://www.vaccinespotter.org/api/v0/states.json"),
 	'US' : requests.get("https://www.vaccinespotter.org/api/v0/US.json"),
-<<<<<<< HEAD
 	'MS': requests.get("https://www.vaccinespotter.org/api/v0/states/MS.json")
 }
 
@@ -35,11 +28,6 @@ def fetch_then_cache(url, name):
 	with open(cachepath, 'w') as f:
 			return f.write(json.dumps(data))
 	return data
-=======
-	# 'MS': requests.get("https://www.vaccinespotter.org/api/v0/states/MS.json")
-}
-
->>>>>>> 7e69d23 (My changes)
 
 @app.route('/') #route decorator for server to run this html code then give to browser
 def index():
@@ -49,28 +37,34 @@ def index():
 def static_assets(path: str):
 	return send_from_directory('static', path)
 
+global location1
+global get_locs
+get_locs = {}
+@app.route('/get_ajax_locations', methods =['GET','POST'])
+def get_ajax_location():
+	global location1
+	global get_locs
+	location = request.form["result"]
+	location1 = location
+	loc = location1.split(",")
+	lat = float(loc[0])
+	print(lat)
+
+	long = float(loc[1])
+	print(long)
+	get_locs['1'] = getLocations((lat,long))
+	
+
+	print("get_locs",get_locs)
+	return str(location1)
 
 #retrieves location from UI 
 @app.route('/get_user_location', methods=['POST'])
 def get_user_location():
-	# location = request.form.innerhtml
-	location = request.form["result"]
-	# lat = str(location[str(location).index('Latitude: '):5])
-	lat = float(location[location.index('Latitude: ')+10: location.index('Latitude: ')+20])
-	long = float(location[location.index('Longitude: ')+10: location.index('Longitude: ')+20])
-	print("Location is : " , location)
-	print("/")
-	print(lat)
-	print(long)
-	
-
-	#get locations function returns all the location within given unit of distance in km
-	get_locs = getLocations((lat,long))
-	print(get_locs)
-	
-
-<<<<<<< HEAD
-	return render_template('locations.html', locations=get_locs, index=0)
+	global location1
+	time.sleep(2)
+	get_loc = get_locs['1']
+	return render_template('locations.html', locations= get_loc, index=0)
 
 @app.route('/get_next_locations', methods=['POST'])
 def get_next_locations():
@@ -88,14 +82,6 @@ def get_previous_locations():
 def getLocations(coord):
 	limit = 5
 	#all_states = fetch_then_cache('https://www.vaccinespotter.org/api/v0/US.json', 'us')
-=======
-	return redirect("http://127.0.0.1:2000")
-
-#this function uses haversine library to calculate distance between two coordinates and sorts them based on closest location
-def getLocations(coord):
-	
-	limit = 5
->>>>>>> 7e69d23 (My changes)
 	all_states = states['US'].json()
 	# MS = states['MS'].json()
 	i = 0  #counts the number of locations within defined distance
@@ -104,26 +90,13 @@ def getLocations(coord):
 	for providers in all_states["features"]:
 		spot_latlong = (providers["geometry"]["coordinates"][1], providers["geometry"]["coordinates"][0])
 		if((hs.haversine(coord, spot_latlong))<=5): #in km
-			places.append([providers["properties"]["name"],providers["properties"]["address"],providers["properties"]["city"],providers["properties"]["state"],hs.haversine(coord, spot_latlong)])
+			places.append([providers["properties"]["name"],providers["properties"]["url"],providers["properties"]["address"],providers["properties"]["city"],providers["properties"]["state"],hs.haversine(coord, spot_latlong)])
 			i = i+1
 	
 	print("i",i)
-	places.sort(key = lambda x:x[4])
+	places.sort(key = lambda x:x[5])
 	return places
-
-
-
-
 		
-
-		
-
-# def checkdistance():
-
-# 	for x in all_states['features']
-
-
-	
 #put in repository then host on github pages is usedfor hosting pages
 #unit, integration, end-to-end testing
 print('Breakpoint me!')
@@ -131,8 +104,4 @@ print('Breakpoint me!')
 if __name__ == '__main__':
 	# app.run(debug=True)
     #host number, port, reruns the files automatically
-<<<<<<< HEAD
 	app.run('127.0.0.1', int(os.environ.get('PORT', 2000)), True)
-=======
-	app.run('127.0.0.1', 2000, True)
->>>>>>> 7e69d23 (My changes)
