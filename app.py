@@ -40,7 +40,7 @@ def static_assets(path: str):
 global location1
 global get_locs
 get_locs = {}
-@app.route('/get_ajax_locations', methods =['GET','POST'])
+@app.route('/get_ajax_locations', methods=['POST','GET'])
 def get_ajax_location():
 	global location1
 	global get_locs
@@ -62,7 +62,8 @@ def get_ajax_location():
 @app.route('/get_user_location', methods=['POST'])
 def get_user_location():
 	global location1
-	time.sleep(2)
+	global get_locs
+	time.sleep(10)
 	get_loc = get_locs['1']
 	return render_template('locations.html', locations= get_loc, index=0)
 
@@ -80,10 +81,7 @@ def get_previous_locations():
 
 #this function uses haversine library to calculate distance between two coordinates and sorts them based on closest location
 def getLocations(coord):
-	limit = 5
-	#all_states = fetch_then_cache('https://www.vaccinespotter.org/api/v0/US.json', 'us')
 	all_states = states['US'].json()
-	# MS = states['MS'].json()
 	i = 0  #counts the number of locations within defined distance
 	places = []
 
@@ -96,9 +94,9 @@ def getLocations(coord):
 	print("i",i)
 	places.sort(key = lambda x:x[5])
 	return places
-		
-#put in repository then host on github pages is usedfor hosting pages
-#unit, integration, end-to-end testing
+	
+
+
 print('Breakpoint me!')
 
 if __name__ == '__main__':

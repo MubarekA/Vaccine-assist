@@ -3,93 +3,69 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8"> <!--  unicode 8  
-		<meta name="viewport" content="width=device-width, initial-scale=1.0"><!--  scalling for mobile   -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> scalling for mobile   -->
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
 		<meta name="description" content="Find out where to get your vaccine at!"> 
 		<link rel="stylesheet" href="/static/index.css" />
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-		<title>Vaccine Locator</title><!--  Tab name   -->
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<link rel="icon" href="favicon.png">
+		<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+		<title>Vaccine Locator</title>
 	</head>
 	<body>
-		<script>
-			// Set up global variable
-			var result;
-			var lat;
-			var long;
-			
-			function showPosition() {
-				// Store the element where the page displays the result
-				result = document.getElementById("result");
-				
-				// If geolocation is available, try to get the visitor's position
-				if(navigator.geolocation) {
-					navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-					result.value = "Getting your location information...";
-				} else {
-					alert("Sorry, your browser does not support HTML5 geolocation.");
-				}
-			};
-			
-			// Define callback function for successful attempt
-			function successCallback(position) {
-				lat = position.coords.latitude;
-				long = position.coords.longitude;
-				var locs = "https://geolocation-db.com/json/"
-				var httpRequest = new XMLHttpRequest();
-				httpRequest.onreadystatechange = displayContents;
-				httpRequest.open('GET', locs, true);
-				httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                httpRequest.send();
+		<section id="welcome-page">
+			<h1>Welcome to Vaccine-Assist</h1>
+			<form method="post" action="get_user_location"  enctype= "multipart/form-data">
+				<button type="submit" id="get-vaccine" onclick="showPosition();">Get Nearest Vaccine Locations</button>
+			</form>
+		</section>
 
-				function displayContents(){
-					if (httpRequest.readyState === XMLHttpRequest.DONE) {
-						if (httpRequest.status === 200) {
-							var response = JSON.parse(httpRequest.responseText);
-							
-						} else {
-							alert('There was a problem with the request.');
-						}
-					}
-				}
+</body>
 
-				result.value = "Your current position is (" + "Latitude: " + position.coords.latitude + ", " + "Longitude: " + position.coords.longitude + ")";
-				
-				document.querySelector('button[type="submit"]').removeAttribute('disabled');
-			}
-			
-			// Define callback function for failed attempt
-			function errorCallback(error) {
-				if(error.code == 1) {
-					result.value = "You've decided not to share your position.";
-				} else if(error.code == 2) {
-					result.value = "The network is down or the positioning service can't be reached.";
-				} else if(error.code == 3) {
-					result.value = "The attempt timed out before it could get the location data.";
-				} else {
-					result.value = "Geolocation failed due to unknown error.";
-				}
-			}
-			
-      		function do_ajax() {
-            	var req = new XMLHttpRequest();
-        		
-        		req.onreadystatechange = function()
-        		{
-       
-        }
-
-        req.open('POST', '/get_ajax_locations', true);
-        req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-        req.send("result=" + lat.toString()+","+long.toString());
-      }
-    </script>
-
-    <p>Use the form below to get nearest vaccine locations to you</p>
-
-		<form method="post" action="get_user_location" enctype= "multipart/form-data">
-			<textarea name="result" id="result" rows="10" cols="10" class="form-control" placeholder="Output"></textarea>
-			<button type="button" onclick="showPosition();" class="btn btn-secondary">Get My Location</button>
-			<button type="submit" disabled class="btn btn-primary" onclick="do_ajax();">Get Nearest Vaccine Locations</button>
-		</form>
-    </body>
+<script>
+	// Set up global variable
+	var result;
+	var lat;
+	var long;
+	function showPosition() {
+		// Store the element where the page displays the result
+		result = document.getElementById("result");
+		
+		// If geolocation is available, try to get the visitor's position
+		if(navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+			result.value = "Getting your location information...";
+		} else {
+			alert("Sorry, your browser does not support HTML5 geolocation.");
+		}
+	};
+	
+	// Define callback function for successful attempt
+	function successCallback(position) {
+		lat = position.coords.latitude;
+		long = position.coords.longitude;
+		// var locs = "https://geolocation-db.com/json/"
+		var req = new XMLHttpRequest();
+		req.onreadystatechange = function(){}
+		req.open('POST', '/get_ajax_locations', true);
+		req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+		req.send("result=" + lat.toString()+","+long.toString());
+	};
+	
+	// Define callback function for failed attempt
+	function errorCallback(error) {
+		if(error.code == 1) {
+			result.value = "You've decided not to share your position.";
+		} else if(error.code == 2) {
+			result.value = "The network is down or the positioning service can't be reached.";
+		} else if(error.code == 3) {
+			result.value = "The attempt timed out before it could get the location data.";
+		} else {
+			result.value = "Geolocation failed due to unknown error.";
+		}
+	};
+		
+</script>
 </html> 
