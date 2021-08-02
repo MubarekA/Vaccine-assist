@@ -26,7 +26,7 @@
 			<tbody>
 				{% for location in locations[index:index + 10] %} <!--Specific Jinja2 syntax for looping -->
 					<tr>
-						<td ><a href={{location[1]}}>{{ location[0] }}</a> </td> <!--Name-->
+						<td ><a href={{location[1]}} target="_blank" rel="noopener noreferrer">{{ location[0] }}</a> </td> <!--Name-->
 						<td>{{ '%0.2f'| format(location[5]* 0.62137|float) }}</td><!--Distance in miles-->
 						<td>{{ location[2] }}</td> <!--Address-->
 						<td>{{ location[3] }}</td> <!--City-->
