@@ -12,27 +12,25 @@
 	</head>
 	<body>
 		<a href="/">Go Home</a> <!--Button to go back to home page-->
-		<h1>Locations go here</h1> <!--Name of Table-->
+		<h1>These are nearest Covid-19 vaccination centres </h1> <!--Name of Table-->
 		<table class="table">
 			<thead>
 				<tr>
 					<th scope="col">Name</th>    <!--Name-->
+					<th scope="col">Distance (Miles) </th>
 					<th scope="col">Address</th>  <!--Adress column-->
 					<th scope="col">City</th>     <!--City Column-->
 					<th scope="col">State</th>    <!--State Column-->
-					<th scope="col">Distance (km)</th>  <!--Distance-->
-					<th scope="col">Distance (Miles) </th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for location in locations[index:index + 10] %} <!--Specific Jinja2 syntax for looping -->
 					<tr>
-						<td ><a href={{location[1]}} target="_blank" rel="noopener noreferrer">{{ location[0] }}</a> </td> <!--Name-->
+						<td ><a href={{location[1]}}>{{ location[0] }}</a> </td> <!--Name-->
+						<td>{{ '%0.2f'| format(location[5]* 0.62137|float) }}</td><!--Distance in miles-->
 						<td>{{ location[2] }}</td> <!--Address-->
 						<td>{{ location[3] }}</td> <!--City-->
 						<td>{{ location[4] }}</td> <!--State-->
-						<td>{{ '%0.2f'| format(location[5]|float) }}</td> <!--Distance-->
-						<td>{{ '%0.2f'| format(location[5]* 0.62137|float) }}</td><!--Distance in miles-->
 					</tr>
 				{% endfor %}  <!--When to stop for loop-->
 			</tbody>
@@ -44,7 +42,7 @@
 				<input type="hidden" name="locations" value="{{ locations|tojson|forceescape }}">
 				<input type="hidden" name="index" value="{{ index }}"/>
 			</form>
-			<li class="page-item"><button disabled class="page-link">{{ index / 10 }}</button></li>
+			<li class="page-item"><button disabled class="page-link">{{ index // 10 }}</button></li>
 			<form action="get_next_locations" method="post" enctype= "multipart/form-data">
 				<li class="page-item"><button type="submit" class="page-link">Next</button></li>
 				<input type="hidden" name="locations" value="{{ locations|tojson|forceescape }}"> 
