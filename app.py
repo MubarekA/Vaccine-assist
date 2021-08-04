@@ -38,33 +38,38 @@ def static_assets(path: str):
 	return send_from_directory('static', path)
 
 global location1
-global get_locs
+# global get_locs
 get_locs = {}
 @app.route('/get_ajax_locations', methods=['POST','GET'])
 def get_ajax_location():
 	global location1
 	global get_locs
-	location = request.form["result"]
-	location1 = location
-	loc = location1.split(",")
-	lat = float(loc[0])
-	print(lat)
+	location1 = request.form["result"]
+	# location1 = location
+	# loc = location1.split(",")
+	# lat = float(loc[0])
+	# print(lat)
 
-	long = float(loc[1])
-	print(long)
-	get_locs['1'] = getLocations((lat,long))
+	# long = float(loc[1])
+	# print(long)
+	# get_locs['1'] = getLocations((lat,long))
 	
 
-	print("get_locs",get_locs)
+	# print("get_locs",get_locs)
 	return str(location1)
 
 #retrieves location from UI 
 @app.route('/get_user_location', methods=['POST'])
 def get_user_location():
 	global location1
-	global get_locs
-	time.sleep(10)
-	get_loc = get_locs['1']
+	# global get_locs
+	loc = location1.split(",")
+	lat = float(loc[0])
+	print(lat)
+
+	long = float(loc[1])
+	print(long)
+	get_loc = getLocations((lat,long))
 	return render_template('locations.html', locations= get_loc, index=0)
 
 @app.route('/get_next_locations', methods=['POST'])
