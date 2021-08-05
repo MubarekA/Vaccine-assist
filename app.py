@@ -87,7 +87,7 @@ def get_previous_locations():
 
 #this function uses haversine library to calculate distance between two coordinates and sorts them based on closest location
 def getLocations(coord):
-	all_states = states['US'].json()
+	all_states = states['MS'].json()
 	i = 0  #counts the number of locations within defined distance
 	places = []
 
