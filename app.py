@@ -63,6 +63,7 @@ def get_ajax_location():
 def get_user_location():
 	global location1
 	# global get_locs
+	time.sleep(5)
 	loc = location1.split(",")
 	lat = float(loc[0])
 	print(lat)
