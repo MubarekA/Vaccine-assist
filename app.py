@@ -64,14 +64,24 @@ def get_user_location():
 	global location1
 	global get_locs
 	time.sleep(5)
-	loc = location1.split(",")
-	lat = float(loc[0])
-	print(lat)
+	try:
+		loc = location1.split(",")
+		lat = float(loc[0])
+		print(lat)
+		long = float(loc[1])
+		# print(long)
+		get_loc = getLocations((lat,long))
+		return render_template('locations.html', locations= get_loc, index=0)
 
-	long = float(loc[1])
-	# print(long)
-	get_loc = getLocations((lat,long))
-	return render_template('locations.html', locations= get_loc, index=0)
+	except:
+		loc = request.form["result"]
+		lat = float(loc[0])
+		print(lat)
+		long = float(loc[1])
+		# print(long)
+		get_loc = getLocations((lat,long))
+		return render_template('locations.html', locations= get_loc, index=0)
+	
 
 @app.route('/get_next_locations', methods=['POST'])
 def get_next_locations():
@@ -87,7 +97,7 @@ def get_previous_locations():
 
 #this function uses haversine library to calculate distance between two coordinates and sorts them based on closest location
 def getLocations(coord):
-	all_states = states['MS'].json()
+	all_states = states['US'].json()
 	i = 0  #counts the number of locations within defined distance
 	places = []
 
