@@ -17,8 +17,8 @@
 	<body>
 		<section id="welcome-page">
 			<h1>Welcome to Vaccine-Assist</h1>
+			<button id="get-vaccine" onclick="showPosition();">Get Nearest Vaccine Locations</button>
 			<form method="post" action="get_user_location" id="form_"  enctype= "multipart/form-data">
-				<button id="get-vaccine" onclick="showPosition();">Get Nearest Vaccine Locations</button>
 			</form>
 		</section>
 
@@ -29,6 +29,8 @@
 	var result;
 	var lat;
 	var long;
+	lat = position.coords.latitude;
+	long = position.coords.longitude;
 	function showPosition() {
 		// Store the element where the page displays the result
 		result = document.getElementById("result");
@@ -47,14 +49,22 @@
 		lat = position.coords.latitude;
 		long = position.coords.longitude;
 		// var locs = "https://geolocation-db.com/json/"
-		var req = new XMLHttpRequest();
-		req.onreadystatechange = function(){}
-		req.open('POST', '/get_ajax_locations', true);
-		req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-		req.send("result=" + lat.toString()+","+long.toString());
+		// var req = new XMLHttpRequest();
+		// req.onreadystatechange = function(){}
+		// req.open('POST', '/get_ajax_locations', true);
+		// req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+		// req.send("result=" + lat.toString()+","+long.toString());
 		var form = document.getElementById("form_");
-		const result = document.createElement('textarea');
-		result.value = lat.toString()+","+long.toString();
+		
+		const text_area = document.createElement('textarea');
+		text_area.style.display = 'none';
+		// text_area.type = 'hidden';
+		form.appendChild(text_area);
+		text_area.setAttribute("id","result");
+		text_area.setAttribute("name","result");
+		
+		// var result = document.getElementById("result");
+		text_area.value = lat.toString()+","+long.toString();
 		form.submit();
 		
 	};
