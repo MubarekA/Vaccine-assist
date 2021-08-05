@@ -63,14 +63,14 @@ def get_ajax_location():
 def get_user_location():
 	global location1
 	# global get_locs
-	time.sleep(5)
-	loc = location1.split(",")
-	lat = float(loc[0])
-	print(lat)
+	# time.sleep(5)
+	# loc = location1.split(",")
+	# lat = float(loc[0])
+	# print(lat)
 
-	long = float(loc[1])
-	print(long)
-	get_loc = getLocations((lat,long))
+	# long = float(loc[1])
+	# print(long)
+	get_loc = getLocations((32.419536799999996,-90.1000917))
 	return render_template('locations.html', locations= get_loc, index=0)
 
 @app.route('/get_next_locations', methods=['POST'])
