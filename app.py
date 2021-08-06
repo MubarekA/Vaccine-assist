@@ -131,6 +131,5 @@ all_states = {}
 if __name__ == '__main__':
 	# app.run(debug=True)
     #host number, port, reruns the files automatically
-	all_states = {}
 	all_states = states['US'].json()
 	app.run('127.0.0.1', int(os.environ.get('PORT', 2000)), True)
