@@ -109,7 +109,7 @@ def get_previous_locations():
 
 #this function uses haversine library to calculate distance between two coordinates and sorts them based on closest location
 def getLocations(coord):
-	all_states = states['MS'].json()
+	global all_states
 	i = 0  #counts the number of locations within defined distance
 	places = []
 
@@ -126,8 +126,10 @@ def getLocations(coord):
 
 
 print('Breakpoint me!')
-
+global all_states
+all_states = {}
 if __name__ == '__main__':
 	# app.run(debug=True)
     #host number, port, reruns the files automatically
+	all_states = states['US'].json()
 	app.run('127.0.0.1', int(os.environ.get('PORT', 2000)), True)
