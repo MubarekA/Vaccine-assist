@@ -6,6 +6,8 @@ import os
 import json
 import time
 
+from werkzeug.datastructures import cache_property
+
 
 app = Flask(__name__)
 
@@ -88,10 +90,11 @@ def get_user_location():
 	loc = request.form["result"]
 	loc = loc.split(",")
 	lat = float(loc[0])
-	print(lat)
+	# print(lat)
 	long = float(loc[1])
-	print(long)
-	get_loc = getLocations((lat,long))
+	# print(long)
+	all_states = states['US'].json()
+	get_loc = getLocations((lat,long),all_states)
 	return render_template('locations.html', locations= get_loc, index=0)
 	
 
@@ -108,7 +111,8 @@ def get_previous_locations():
 	return render_template('locations.html', locations=json.loads(locations), index=max(0, int(index) - 10))
 
 #this function uses haversine library to calculate distance between two coordinates and sorts them based on closest location
-def getLocations(coord):
+
+def getLocations(coord, all_states):
 	# global all_states
 	i = 0  #counts the number of locations within defined distance
 	places = []
@@ -119,7 +123,7 @@ def getLocations(coord):
 			places.append([providers["properties"]["name"],providers["properties"]["url"],providers["properties"]["address"],providers["properties"]["city"],providers["properties"]["state"],hs.haversine(coord, spot_latlong)])
 			i = i+1
 	
-	print("i",i)
+	# print("i",i)
 	places.sort(key = lambda x:x[5])
 	return places
 	
@@ -131,5 +135,5 @@ all_states = {}
 if __name__ == '__main__':
 	# app.run(debug=True)
     #host number, port, reruns the files automatically
-	all_states = states['US'].json()
+	
 	app.run('127.0.0.1', int(os.environ.get('PORT', 2000)), True)
