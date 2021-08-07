@@ -7,6 +7,7 @@ import json
 import time
 
 from werkzeug.datastructures import cache_property
+from geopy.geocoders import Nominatim
 
 
 app = Flask(__name__)
@@ -15,6 +16,59 @@ states = {
 	'all_states' : requests.get("https://www.vaccinespotter.org/api/v0/states.json"),
 	'US' : requests.get("https://www.vaccinespotter.org/api/v0/US.json"),
 	'MS': requests.get("https://www.vaccinespotter.org/api/v0/states/MS.json")
+}
+states_ = {
+	'Alabama': requests.get("https://www.vaccinespotter.org/api/v0/states/AL.json"),
+	'Alaska': requests.get("https://www.vaccinespotter.org/api/v0/states/AK.json"),
+	'Arizona': requests.get("https://www.vaccinespotter.org/api/v0/states/AZ.json"),
+	'Arkansas': requests.get("https://www.vaccinespotter.org/api/v0/states/AZ.json"),
+	'California': requests.get("https://www.vaccinespotter.org/api/v0/states/CA.json"),
+	'Colorado':requests.get("https://www.vaccinespotter.org/api/v0/states/CO.json"),
+	'Connecticut':requests.get("https://www.vaccinespotter.org/api/v0/states/CT.json"),
+	'Delaware': requests.get("https://www.vaccinespotter.org/api/v0/states/DE.json"),
+	'District of Columbia': requests.get("https://www.vaccinespotter.org/api/v0/states/DC.json"),
+	'Florida': requests.get("https://www.vaccinespotter.org/api/v0/states/DC.json"),
+	'Georgia': requests.get("https://www.vaccinespotter.org/api/v0/states/GA.json"),
+	'Hawaii':requests.get("https://www.vaccinespotter.org/api/v0/states/HI.json"),
+	'Idaho':requests.get("https://www.vaccinespotter.org/api/v0/states/ID.json"),
+	'Illinois':requests.get("https://www.vaccinespotter.org/api/v0/states/IL.json"),
+	'Indiana': requests.get("https://www.vaccinespotter.org/api/v0/states/IN.json"),
+	'Iowa': requests.get("https://www.vaccinespotter.org/api/v0/states/IA.json"),
+	'Kansas': requests.get("https://www.vaccinespotter.org/api/v0/states/KS.json"),
+	'Kentucky': requests.get("https://www.vaccinespotter.org/api/v0/states/KY.json"),
+	'Louisiana': requests.get("https://www.vaccinespotter.org/api/v0/states/LA.json"),
+	'Maine': requests.get("https://www.vaccinespotter.org/api/v0/states/ME.json"),
+	'Michigan': requests.get("https://www.vaccinespotter.org/api/v0/states/MI.json"),
+	'Minnesota': requests.get("https://www.vaccinespotter.org/api/v0/states/MN.json"),
+	'Mississippi': requests.get("https://www.vaccinespotter.org/api/v0/states/MS.json"),
+	'Missouri': requests.get("https://www.vaccinespotter.org/api/v0/states/MO.json"),
+	'Montana': requests.get("https://www.vaccinespotter.org/api/v0/states/MT.json"),
+	'Nebraska': requests.get("https://www.vaccinespotter.org/api/v0/states/NE.json"),
+	'Nevada': requests.get("https://www.vaccinespotter.org/api/v0/states/NV.json"),
+	'New Hampshire': requests.get("https://www.vaccinespotter.org/api/v0/states/NH.json"),
+	'New Jersey': requests.get("https://www.vaccinespotter.org/api/v0/states/NJ.json"),
+	'New Mexico': requests.get("https://www.vaccinespotter.org/api/v0/states/NM.json"),
+	'New York': requests.get("https://www.vaccinespotter.org/api/v0/states/NM.json"),
+	'North Carolina': requests.get("https://www.vaccinespotter.org/api/v0/states/NC.json"),
+	'North Dakota': requests.get("https://www.vaccinespotter.org/api/v0/states/ND.json"),
+	'Ohio': requests.get("https://www.vaccinespotter.org/api/v0/states/OH.json"),
+	'Oklahoma': requests.get("https://www.vaccinespotter.org/api/v0/states/OK.json"),
+	'Oregon': requests.get("https://www.vaccinespotter.org/api/v0/states/OR.json"),
+	'Pennsylvania': requests.get("https://www.vaccinespotter.org/api/v0/states/PA.json"),
+	'Puerto Rico': requests.get("https://www.vaccinespotter.org/api/v0/states/PR.json"),
+	'Rhode Island': requests.get("https://www.vaccinespotter.org/api/v0/states/RI.json"),
+	'South Carolina': requests.get("https://www.vaccinespotter.org/api/v0/states/SC.json"),
+	'South Dakota': requests.get("https://www.vaccinespotter.org/api/v0/states/SD.json"),
+	'Tennessee': requests.get("https://www.vaccinespotter.org/api/v0/states/TN.json"),
+	'Texas': requests.get("https://www.vaccinespotter.org/api/v0/states/TX.json"),
+	'Virgin Island': requests.get("https://www.vaccinespotter.org/api/v0/states/VI.json"),
+	'Utah': requests.get("https://www.vaccinespotter.org/api/v0/states/UT.json"),
+	'Vermont': requests.get("https://www.vaccinespotter.org/api/v0/states/VT.json"),
+	'Virginia': requests.get("https://www.vaccinespotter.org/api/v0/states/VA.json"),
+	'Washington': requests.get("https://www.vaccinespotter.org/api/v0/states/WA.json"),
+	'West Virginia': requests.get("https://www.vaccinespotter.org/api/v0/states/WV.json"),
+	'Wisconsin':requests.get("https://www.vaccinespotter.org/api/v0/states/WI.json"),
+	'Wyoming': requests.get("https://www.vaccinespotter.org/api/v0/states/WY.json")
 }
 
 
@@ -39,64 +93,33 @@ def index():
 def static_assets(path: str):
 	return send_from_directory('static', path)
 
-global location1
-# global get_locs
-get_locs = {}
-@app.route('/get_ajax_locations', methods=['POST','GET'])
-def get_ajax_location():
-	global location1
-	global get_locs
-	location1 = request.form["result"]
-	# location1 = location
-	# loc = location1.split(",")
-	# lat = float(loc[0])
-	# print(lat)
-
-	# long = float(loc[1])
-	# print(long)
-	# get_locs['1'] = getLocations((lat,long))
-	
-
-	# print("get_locs",get_locs)
-	return str(location1)
 
 #retrieves location from UI 
 @app.route('/get_user_location', methods=['POST'])
 def get_user_location():
 	global location1
 	global get_locs
-	# time.sleep(5)
-	# try:
-	# 	print("First try")
-	# 	loc = location1.split(",")
-	# 	lat = float(loc[0])
-	# 	print(lat)
-	# 	long = float(loc[1])
-	# 	# print(long)
-	# 	get_loc = getLocations((lat,long))
-	# 	return render_template('locations.html', locations= get_loc, index=0)
-
-	# except:
-	# 	print("In Exception")
-	# 	loc = request.form["result"]
-	# 	loc = loc.split(",")
-	# 	lat = float(loc[0])
-	# 	print(lat)
-	# 	long = float(loc[1])
-	# 	print(long)
-	# 	get_loc = getLocations((lat,long))
-	# 	return render_template('locations.html', locations= get_loc, index=0)
-	# print("In Exception")
+	
 	loc = request.form["result"]
 	loc = loc.split(",")
 	lat = float(loc[0])
-	# print(lat)
-	long = float(loc[1])
-	# print(long)
-	all_states = states['US'].json()
-	get_loc = getLocations((lat,long),all_states)
-	return render_template('locations.html', locations= get_loc, index=0)
 	
+	long = float(loc[1])
+	
+	state_information = state_of_user((lat,long))['state']
+	print(state_information)
+	state_location = states_[state_information].json()
+	
+	get_loc = getLocations(state_location,(lat,long))
+	return render_template('locations.html', locations= get_loc, index=0)
+
+def state_of_user(coordinates):
+    # CHANGING LAT&LONG TO ADDRESS
+    locator = Nominatim(user_agent= "myGeocoder")
+    # location we get from the website
+    location = locator.reverse(coordinates)
+    state_of_user = location.raw["address"]
+    return state_of_user
 
 @app.route('/get_next_locations', methods=['POST'])
 def get_next_locations():
@@ -112,15 +135,14 @@ def get_previous_locations():
 
 #this function uses haversine library to calculate distance between two coordinates and sorts them based on closest location
 
-def getLocations(coord, all_states):
-	# global all_states
-	i = 0  #counts the number of locations within defined distance
+def getLocations(state, coord):
+	i = 0
 	places = []
 
-	for providers in all_states["features"]:
-		spot_latlong = (providers["geometry"]["coordinates"][1], providers["geometry"]["coordinates"][0])
+	for providers in state['features']:
+		spot_latlong = (providers['geometry']['coordinates'][1], providers['geometry']['coordinates'][0])
 		if((hs.haversine(coord, spot_latlong))<=5): #in km
-			places.append([providers["properties"]["name"],providers["properties"]["url"],providers["properties"]["address"],providers["properties"]["city"],providers["properties"]["state"],hs.haversine(coord, spot_latlong)])
+			places.append([providers['properties']['name'],providers['properties']['url'],providers['properties']['address'],providers['properties']['city'],providers['properties']['state'],hs.haversine(coord, spot_latlong)])
 			i = i+1
 	
 	# print("i",i)
@@ -130,10 +152,7 @@ def getLocations(coord, all_states):
 
 
 print('Breakpoint me!')
-all_states = {}
+# all_states = {}
 
 if __name__ == '__main__':
-	# app.run(debug=True)
-    #host number, port, reruns the files automatically
-	
 	app.run('127.0.0.1', int(os.environ.get('PORT', 2000)), True)
