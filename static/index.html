@@ -48,12 +48,7 @@
 	function successCallback(position) {
 		lat = position.coords.latitude;
 		long = position.coords.longitude;
-		// var locs = "https://geolocation-db.com/json/"
-		// var req = new XMLHttpRequest();
-		// req.onreadystatechange = function(){}
-		// req.open('POST', '/get_ajax_locations', true);
-		// req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-		// req.send("result=" + lat.toString()+","+long.toString());
+		
 		var form = document.getElementById("form_");
 		
 		const text_area = document.createElement('textarea');
