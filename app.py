@@ -106,11 +106,11 @@ def get_user_location():
 	
 	long = float(loc[1])
 	
-	# state_information = state_of_user((lat,long))
-	# state_location = states_[state_information].json()
+	state_information = state_of_user((lat,long))
+	state_location = states_[state_information].json()
 	
-	# get_loc = getLocations(state_location,(lat,long))
-	# return render_template('locations.html', locations= get_loc, index=0)
+	get_loc = getLocations(state_location,(lat,long))
+	return render_template('locations.html', locations= get_loc, index=0)
 
 def state_of_user(coordinates):
     # CHANGING LAT&LONG TO ADDRESS

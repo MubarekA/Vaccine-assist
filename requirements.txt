@@ -20,6 +20,7 @@ Flask==1.1.2
 folium==0.11.0
 future==0.18.2
 geocoder==1.38.1
+geopy==2.2.0
 gunicorn==19.0.0
 haversine==2.3.1
 idna==2.10
