@@ -106,8 +106,7 @@ def get_user_location():
 	
 	long = float(loc[1])
 	
-	state_information = state_of_user((lat,long))['state']
-	print(state_information)
+	state_information = state_of_user((lat,long))
 	state_location = states_[state_information].json()
 	
 	get_loc = getLocations(state_location,(lat,long))
@@ -119,7 +118,7 @@ def state_of_user(coordinates):
     # location we get from the website
     location = locator.reverse(coordinates)
     state_of_user = location.raw["address"]
-    return state_of_user
+    return state_of_user['state']
 
 @app.route('/get_next_locations', methods=['POST'])
 def get_next_locations():
