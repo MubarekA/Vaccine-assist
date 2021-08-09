@@ -106,7 +106,8 @@ def get_user_location():
 	state_location = states_[state_information].json()
 	
 	get_loc = getLocations(state_location,(lat,long))
-	return render_template('locations.html', locations= get_loc, index=0)
+	max_index = len(get_loc)
+	return render_template('locations.html', locations= get_loc, index=0, max_index= int(max_index))
 
 def state_of_user(coordinates):
     # CHANGING LAT&LONG TO ADDRESS
@@ -120,13 +121,15 @@ def state_of_user(coordinates):
 def get_next_locations():
 	locations = request.form["locations"]
 	index = request.form["index"]
-	return render_template('locations.html', locations=json.loads(locations), index=int(index) + 10)
+	max_index = request.form["max_index"]
+	return render_template('locations.html', locations=json.loads(locations), index=int(index) + 10, max_index= int(max_index))
 
 @app.route('/get_previous_locations', methods=['POST'])
 def get_previous_locations():
 	locations = request.form["locations"]
 	index = request.form["index"]
-	return render_template('locations.html', locations=json.loads(locations), index=max(0, int(index) - 10))
+	max_index = request.form["max_index"]
+	return render_template('locations.html', locations=json.loads(locations), index=max(0, int(index) - 10),max_index= int(max_index))
 
 #this function uses haversine library to calculate distance between two coordinates and sorts them based on closest location
 
