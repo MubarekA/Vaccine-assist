@@ -12,11 +12,6 @@ from geopy.geocoders import Nominatim
 
 app = Flask(__name__)
 
-states = {
-	'all_states' : requests.get("https://www.vaccinespotter.org/api/v0/states.json"),
-	'US' : requests.get("https://www.vaccinespotter.org/api/v0/US.json"),
-	'MS': requests.get("https://www.vaccinespotter.org/api/v0/states/MS.json")
-}
 states_ = {
 	'Alabama': requests.get("https://www.vaccinespotter.org/api/v0/states/AL.json"),
 	'Alaska': requests.get("https://www.vaccinespotter.org/api/v0/states/AK.json"),
@@ -38,6 +33,7 @@ states_ = {
 	'Kentucky': requests.get("https://www.vaccinespotter.org/api/v0/states/KY.json"),
 	'Louisiana': requests.get("https://www.vaccinespotter.org/api/v0/states/LA.json"),
 	'Maine': requests.get("https://www.vaccinespotter.org/api/v0/states/ME.json"),
+	'Maryland': requests.get("https://www.vaccinespotter.org/api/v0/states/MD.json"),
 	'Michigan': requests.get("https://www.vaccinespotter.org/api/v0/states/MI.json"),
 	'Minnesota': requests.get("https://www.vaccinespotter.org/api/v0/states/MN.json"),
 	'Mississippi': requests.get("https://www.vaccinespotter.org/api/v0/states/MS.json"),
